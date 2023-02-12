@@ -1,5 +1,5 @@
 # 加密信息
-tushare_token : 'dc2b766144d0962dae6e031bb8239e9087dbde92b73630e6a185c721'
+tushare_token : '/Users/winston/api_mine/config/tokens/tushare'
 
 # 本地地址（尽量少指定）
 api_path : '/Users/winston/api_mine/'
