@@ -1,7 +1,10 @@
 # DIY
 *.ipynb
+!demo/*.ipynb
 .idea
 .idea/*
+idea/*
+idea
 .DS_Store
 .ipynb_checkpoints
 */__pycache__/
