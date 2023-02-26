@@ -1,9 +1,16 @@
+status : 1
+
 # 加密信息
 tushare_token : '/Users/winston/api_mine/config/tokens/tushare'
 
 # 本地地址（尽量少指定）
 # api_path : '/Users/winston/api_mine/'
 api_path : '/Users/winston/mygitrep/sys23/'
+
+# 相对地址
+path :
+    cache : '{}/cache/'
+    tradedates : '{}/tradedates.csv'
 
 # 市场环境
 year_length : 246

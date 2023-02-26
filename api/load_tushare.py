@@ -36,6 +36,10 @@ def conf_init(conf_path: str) -> dict:
 
     # Tushare token
     conf['tushare_token'] = open(conf['tushare_token']).read().strip('\n')
+    
+    # Path fill
+    for k in conf['path'].keys():
+        conf['path'][k] = conf['path'][k].format(conf['api_path'])
 
     return conf
 
