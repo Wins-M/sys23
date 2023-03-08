@@ -1,8 +1,13 @@
-Wind研报遍历
+- [rnk_wind_reports.csv](rnk_wind_reports.csv) 2022-02-23 点计量排序
+-  [all_wind_reports.csv](all_wind_reports.csv) 2022-02-18 Wind研报遍历
 
-> 23.2.18
+## 点计量排序
 
-# Wind研报遍历 #
+![all_words](all_words.png)
+
+<center>图：高频关键词</center>
+
+## Wind研报遍历 ##
 
 - 屏蔽：日报/周报
 
