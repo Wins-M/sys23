@@ -1,11 +1,9 @@
 import os
 import pandas as pd
-# import numpy as np
 import datetime
 import time
 from tqdm import tqdm
 import tushare as ts
-# import importlib
 from typing import Dict
 
 _PATH = '/Users/winston/mygitrep/sys23/'  # TODO

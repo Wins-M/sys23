@@ -8,8 +8,8 @@ import seaborn
 # seaborn.set_style("darkgrid")
 seaborn.set_style("white")
 
-# plt.rc("figure", figsize=(16, 6))
-plt.rc("figure", figsize=(6, 3))
+plt.rc("figure", figsize=(16, 6))
+# plt.rc("figure", figsize=(6, 3))
 
 plt.rc("savefig", dpi=90)
 
