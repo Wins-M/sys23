@@ -9,8 +9,29 @@ api_path : '/Users/winston/mygitrep/sys23/'
 
 # 相对地址
 path :
-    cache : '{}/cache/'
     tradedates : '{}/tradedates.csv'
+    cache : '{}/cache/'
+    openAdj : '{}/cache/openAdj.csv'
+    highAdj : '{}/cache/highAdj.csv'
+    lowAdj : '{}/cache/lowAdj.csv'
+    closeAdj : '{}/cache/closeAdj.csv'
+    vol : '{}/cache/vol.csv'
+    amount : '{}/cache/amount.csv'
+    turnover_rate : '{}/cache/turnover_rate.csv'
+    turnover_rate_f : '{}/cache/turnover_rate_f.csv'
+    volume_ratio : '{}/cache/volume_ratio.csv'
+    pe : '{}/cache/pe.csv'
+    pe_ttm : '{}/cache/pe_ttm.csv'
+    pb : '{}/cache/pb.csv'
+    ps : '{}/cache/ps.csv'
+    ps_ttm : '{}/cache/ps_ttm.csv'
+    dv_ratio : '{}/cache/dv_ratio.csv'
+    dv_ttm : '{}/cache/dv_ttm.csv'
+    total_share : '{}/cache/total_share.csv'
+    float_share : '{}/cache/float_share.csv'
+    free_share : '{}/cache/free_share.csv'
+    total_mv : '{}/cache/total_mv.csv'
+    circ_mv : '{}/cache/circ_mv.csv'
 
 # 市场环境
 year_length : 246

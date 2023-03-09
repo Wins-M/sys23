@@ -56,7 +56,7 @@ class TushareLoader(object):
 
     def __init__(self, conf: dict):
         # self.conf: dict = conf
-        self.start_date: str = '20150101'  # tushare最开始从2015
+        self.start_date: str = '20140630'  # tushare最开始从2015
         self.end_date: str = datetime.date.today().strftime('%Y%m%d')
         self.pro = ts.pro_api(conf['tushare_token'])
         self.csi_pool: Dict[str] = conf['csi_pool']
