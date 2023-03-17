@@ -4,8 +4,8 @@
 自用的回测框架，只限个人使用。
 
 - ***目录[`api`](api): 接口***
-- [`load_tushare`](data/load_tushare.py): 从Tushare获取基础数据
-- [`combine_tushare`](data/combine_tushare.py): 将日度流量数据整合成面板数据
+- [`load_tushare`](api/load_tushare.py): 从Tushare获取基础数据
+- [`combine_tushare`](api/combine_tushare.py): 将日度流量数据整合成面板数据
 - 
 - ***目录[`data`](data): 数据相关***
 - 
