@@ -149,6 +149,14 @@ class CacheCombiner(object):
             df2.to_csv(file)
             print(f"Updated in `{self.conf['path'][k]}`")
 
+    def generate_demo(self, length=30):
+        """将所有已有表格都生成demo作为示例数据"""
+        for k, file in tqdm(self.conf['path'].items()):
+            if file[-4:] != '.csv':
+                continue
+            pd.read_csv(file, index_col=0).tail(length).to_csv(
+                self.conf['path']['cache_demo'] + file.rsplit('/', maxsplit=1)[-1])
+
 
 def main():
     config_path = f'{_PATH}/config_stk.yaml'
@@ -158,6 +166,7 @@ def main():
         combiner.combine_daily()
         combiner.combine_daily_basic()
         combiner.combine_index_weight()
+        combiner.generate_demo(length=30)
 
 
 if __name__ == '__main__':

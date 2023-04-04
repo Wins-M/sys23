@@ -12,7 +12,7 @@ api_path : '/Users/winston/mygitrep/sys23/'
 path :
     tradedates : '{}/tradedates.csv'
     cache : '{}/cache/'
-    data : '{}/data/'  # TODO: Transfer following tables into data
+    cache_demo : '{}/demo/cache_demo/'
     openAdj : '{}/cache/openAdj.csv'
     highAdj : '{}/cache/highAdj.csv'
     lowAdj : '{}/cache/lowAdj.csv'
