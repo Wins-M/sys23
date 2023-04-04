@@ -166,7 +166,7 @@ def main():
         combiner.combine_daily()
         combiner.combine_daily_basic()
         combiner.combine_index_weight()
-        combiner.generate_demo(length=30)
+        combiner.generate_demo(length=10)
 
 
 if __name__ == '__main__':
