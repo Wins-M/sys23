@@ -1,5 +1,5 @@
-- [rnk_wind_reports.csv](rnk_wind_reports.csv) 2022-02-23 点计量排序
--  [all_wind_reports.csv](all_wind_reports.csv) 2022-02-18 Wind研报遍历
+- [rnk_wind_reports.csv](rnk_wind_reports.csv) 2023-02-23 点计量排序
+-  [all_wind_reports.csv](all_wind_reports.csv) 2023-02-18 Wind研报遍历
 
 ## 点计量排序
 
