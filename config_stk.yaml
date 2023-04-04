@@ -1,3 +1,4 @@
+# 配置文件有效性
 status : 1
 
 # 加密信息
@@ -11,6 +12,7 @@ api_path : '/Users/winston/mygitrep/sys23/'
 path :
     tradedates : '{}/tradedates.csv'
     cache : '{}/cache/'
+    data : '{}/data/'  # TODO: Transfer following tables into data
     openAdj : '{}/cache/openAdj.csv'
     highAdj : '{}/cache/highAdj.csv'
     lowAdj : '{}/cache/lowAdj.csv'
@@ -32,6 +34,10 @@ path :
     free_share : '{}/cache/free_share.csv'
     total_mv : '{}/cache/total_mv.csv'
     circ_mv : '{}/cache/circ_mv.csv'
+    CSI300: '{}/cache/index_weight_CSI300.csv'
+    CSI500: '{}/cache/index_weight_CSI500.csv'
+    CSI800: '{}/cache/index_weight_CSI800.csv'
+    CSI1000: '{}/cache/index_weight_CSI1000.csv'
 
 # 市场环境
 year_length : 246

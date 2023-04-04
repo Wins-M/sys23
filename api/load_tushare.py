@@ -211,7 +211,7 @@ class TushareLoader(object):
     def get_tradedates(self, start_date=None, end_date=None,
                        path='', filename='tradedates.csv',
                        fmt='%Y%m%d', silent=False) -> pd.Series:
-        """获取交易日序列"""
+        """获取交易日序列 TODO: return sr name: cal_date"""
         if not start_date:
             start_date = self.start_date
         if not end_date:
