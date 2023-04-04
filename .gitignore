@@ -11,7 +11,7 @@ idea
 *.pyc
 ~$*
 ~$*.xlsx
-*cache/
+*cache/*
 ./data/*
 
 # Byte-compiled / optimized / DLL files
