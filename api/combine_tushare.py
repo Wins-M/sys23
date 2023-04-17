@@ -117,7 +117,8 @@ class CacheCombiner(object):
 
         # Next date to update
         begin_date = self.infer_date_to_update_from_existing_table(
-            last_tgt_table=self.conf['path']['circ_mv'])
+            last_tgt_table=self.conf['path']['closeAdj'])
+            # last_tgt_table=self.conf['path']['circ_mv'])
 
         ohlc = ['open', 'high', 'low', 'close']
         volamt = ['vol', 'amount']
@@ -131,19 +132,29 @@ class CacheCombiner(object):
             for c in d.columns:
                 if c not in ohlc + volamt:
                     continue
-                sr = (d[c] * a).round(9) if c in ohlc else d[c]
-                cc = c + 'Adj' if c in ohlc else c
+
+                sr = d[c]
                 sr.name = pd.to_datetime(td, format='%Y%m%d')
-                if cc not in cached:
-                    # cached[cc] = pd.DataFrame(sr).T
-                    cached[cc] = [sr]
+                if c not in cached:
+                    cached[c] = [sr]
                 else:
-                    # cached[cc] = pd.concat([cached[cc], sr], axis=0)
-                    cached[cc].append(sr)
+                    cached[c].append(sr)
+
+                if c in ohlc:  # 复权调整
+                    csr = (d[c] * a).round(9)
+                    csr.name = pd.to_datetime(td, format='%Y%m%d')
+                    cc = c + 'Adj'
+                    if cc not in cached:
+                        cached[cc] = [csr]
+                    else:
+                        cached[cc].append(csr)
 
         for k, v in cached.items():  # 暂时必须延续之前，补充新增交易日
             file = self.conf['path'][k]
-            df0 = pd.read_csv(file, index_col=0, parse_dates=True)
+            if os.path.exists(file):
+                df0 = pd.read_csv(file, index_col=0, parse_dates=True)
+            else:
+                df0 = pd.DataFrame()
             df1 = pd.concat(v, axis=1).T
             df2 = pd.concat([df0, df1], axis=0)
             df2.to_csv(file)
