@@ -1,6 +1,7 @@
 # DIY
 *.ipynb
 !demo/*.ipynb
+demo/lucky_number/*.xlsx
 .idea
 .idea/*
 idea/*
