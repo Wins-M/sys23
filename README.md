@@ -11,7 +11,7 @@
 - 
 - ***目录[`demo`](demo): 功能/策略的展示***
 - [`mkt_dvg_min_amt`](demo/mkt_dvg_min_amt.ipynb): 成交额市场分歧度择时【因子】
-- [`lucky_number`](demo/lucky_number.ipynb): 价格中的数字【实证】
+- [`lucky_number`](demo/lucky_number/): 价格中的数字【实证】
 - [`prospect`](demo/prospect.ipynb): 前景理论【TODO】
 - 
 - ***目录[`idea`](idea): 想法***
