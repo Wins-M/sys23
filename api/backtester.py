@@ -5,9 +5,73 @@ from pprint import pprint
 from tqdm import tqdm
 import sys
 
-import load_tushare
-from plt_head import *
+# from api import load_tushare
+# from plt_head import *
 _PATH = '//'
+
+
+def cal_result_stat(df: pd.DataFrame, save_path: str = None, kind='cumsum', freq='D', lang='EN') -> pd.DataFrame:
+    """
+    对日度收益序列df计算相关结果
+    :param lang:
+    :param df: 值为日收益率小r，列index为日期DateTime
+    :param save_path: 存储名（若有）
+    :param kind: 累加/累乘
+    :param freq: M D W Y
+    :return: 结果面板
+    """
+    if kind == 'cumsum':
+        df1 = df.cumsum() + 1
+    elif kind == 'cumprod':
+        df1 = df.add(1).cumprod()
+    else:
+        raise ValueError(f"""Invalid kind={kind}, only support('cumsum', 'cumprod')""")
+
+    if freq == 'D':
+        freq_year_adj = 242
+    elif freq == 'W':
+        freq_year_adj = 48
+    elif freq == 'M':
+        freq_year_adj = 12
+    elif freq == 'Y':
+        freq_year_adj = 1
+    else:
+        raise ValueError(f"""Invalid freq={freq}, only support('D', 'W', 'M', 'Y')""")
+
+    data = df.copy()
+    data['Date'] = data.index
+    data['SemiYear'] = data['Date'].apply(lambda s: f'{s.year}-H{s.month // 7 + 1}')
+    res: pd.DataFrame = data.groupby('SemiYear')[['Date']].last().reset_index()
+    res.index = res['Date']
+    res['Cash'] = (2e7 * df1.loc[res.index]).round(1)
+    res['UnitVal'] = df1.loc[res.index]
+    res['TRet'] = res['UnitVal'] - 1
+    res['PRet'] = res['UnitVal'].pct_change()
+    res.iloc[0, -1] = res['UnitVal'].iloc[0] - 1
+    res['PSharpe'] = df.groupby(data.SemiYear).apply(lambda s: s.mean() / s.std() * np.sqrt(freq_year_adj)).values
+    mdd = df1 / df1.cummax() - 1 if kind == 'cumprod' else df1 - df1.cummax()
+    res['PMaxDD'] = mdd.groupby(data.SemiYear).min().values
+    res['PCalmar'] = res['PRet'] / res['PMaxDD'].abs()
+    res['PWinR'] = df.groupby(data['SemiYear']).apply(lambda s: (s > 0).mean()).values
+    res['TMaxDD'] = mdd.min().values[0]
+    res['TSharpe'] = (df.mean() / df.std() * np.sqrt(freq_year_adj)).values[0]
+    res['TCalmar'] = res['TSharpe'] / res['TMaxDD'].abs()
+    res['TWinR'] = (df > 0).mean().values[0]
+    res['TAnnRet'] = (df1.iloc[-1] ** (freq_year_adj / len(df1)) - 1).values[0]
+
+    res['Date'] = res['Date'].apply(lambda x: x.strftime('%Y-%m-%d'))
+    if lang == 'CH':
+        res1 = pd.DataFrame(columns=res.columns, index=['CH'])
+        res1.loc['CH', :] = ['日期', '年度', '资金', '净值', '累计收益',
+                             '收益', '夏普', '回撤', '卡玛', '胜率',
+                             '总回撤', '总夏普', '总卡玛', '总胜率',
+                             '年化收益', ]
+        res = pd.concat([res, res1], ignore_index=True)
+
+    res = res.set_index('SemiYear')
+    if save_path is not None:
+        table_save_safe(res, save_path)
+    return res
 
 
 class Backtester(object):
