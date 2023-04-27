@@ -5,15 +5,19 @@ status : 1
 tushare_token : '/Users/winston/api_mine/config/tokens/tushare'
 
 # 本地地址（尽量少指定）
-# api_path : '/Users/winston/api_mine/'
 api_path : '/Users/winston/mygitrep/sys23/'
 
 # 相对地址
 path :
     tradedates : '{}/tradedates.csv'
     cache : '{}/cache/'
+    factors_csv : '{}/cache/factors_csv/'
+    factors_res : '{}/cache/factors_res/'
     demo : '{}/demo/'
     cache_demo : '{}/demo/cache_demo/'
+    new_share : '{}/cache/new_share.csv'  # Xd
+    suspend_d : '{}/cache/suspend_d.csv'  # R/S/RS/SR, 1d
+    st_status : '{}/cache/st_status.csv'  # 1/0, 1d
     open : '{}/cache/open.csv'
     high : '{}/cache/high.csv'
     low : '{}/cache/low.csv'
@@ -24,6 +28,9 @@ path :
     closeAdj : '{}/cache/closeAdj.csv'
     vol : '{}/cache/vol.csv'
     amount : '{}/cache/amount.csv'
+    up_limit : '{}/cache/up_limit.csv'
+    down_limit : '{}/cache/down_limit.csv'
+    updown_status : '{}/cache/updown_status.csv'  # OU/OD/CU/CD, 1d
     turnover_rate : '{}/cache/turnover_rate.csv'
     turnover_rate_f : '{}/cache/turnover_rate_f.csv'
     volume_ratio : '{}/cache/volume_ratio.csv'
@@ -46,12 +53,11 @@ path :
 
 # 市场环境
 year_length : 246
-# 沪深300指数由上海和深圳证券市场中市值大、流动性好的300只股票组成，综合反映中国A股市场上市股票价格的整体表现。
-# 中证500指数由全部A股中剔除沪深300指数成份股及总市值排名前300名的股票后，总市值排名靠前的500只股票组成，综合反映中国A股市场中一批中小市值公司的股票价格表现。
-# 中证800指数由中证500和沪深300指数成份股组成，综合反映中国A股市场大中小市值公司的股票价格表现。
-# 中证1000指数由全部A股中剔除中证800指数成份股后，规模偏小且流动性好的1000只股票组成，综合反映中国A股市场中一批小市值公司的股票价格表现。
 csi_pool : 
-    CSI300 : '399300.SZ'
-    CSI500 : '000905.SH'
-    CSI800 : '000906.SH'
-    CSI1000 : '000852.SH'
+    CSI300 : '399300.SZ'  # 沪深300指数由上海和深圳证券市场中市值大、流动性好的300只股票组成，综合反映中国A股市场上市股票价格的整体表现。
+    CSI500 : '000905.SH'  # 中证500指数由全部A股中剔除沪深300指数成份股及总市值排名前300名的股票后，总市值排名靠前的500只股票组成，综合反映中国A股市场中一批中小市值公司的股票价格表现。
+    CSI800 : '000906.SH'  # 中证800指数由中证500和沪深300指数成份股组成，综合反映中国A股市场大中小市值公司的股票价格表现。
+    CSI1000 : '000852.SH'  # 中证1000指数由全部A股中剔除中证800指数成份股后，规模偏小且流动性好的1000只股票组成，综合反映中国A股市场中一批小市值公司的股票价格表现。
+    
+# 更新 path.cache_demo 下数据展示
+update_cache_demo : 0

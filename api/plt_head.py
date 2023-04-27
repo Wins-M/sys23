@@ -20,4 +20,3 @@ plt.rc("font", size=12)
 # plt.rc("font", size=10)
 
 plt.rcParams["date.autoformatter.hour"] = "%H:%M:%S"
-

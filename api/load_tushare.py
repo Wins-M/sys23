@@ -1,4 +1,6 @@
 import os
+
+import numpy as np
 import pandas as pd
 import datetime
 import time
@@ -7,6 +9,13 @@ import tushare as ts
 from typing import Dict
 
 _PATH = '/Users/winston/mygitrep/sys23/'  # TODO
+
+
+def main():
+    conf_path = '/Users/winston/mygitrep/sys23/config_stk.yaml'
+    conf = conf_init(conf_path)
+    tushare_loader = TushareLoader(conf)
+    tushare_loader.update_local_cache(min_file_size=50)  # 有效文件需要大于 ${}B
 
 
 def next_calendar_date(lend: str, delta=1,
@@ -42,13 +51,6 @@ def conf_init(conf_path: str) -> dict:
     return conf
 
 
-def main():
-    conf_path = '/Users/winston/mygitrep/sys23/config_stk.yaml'
-    conf = conf_init(conf_path)
-    tushare_loader = TushareLoader(conf)
-    tushare_loader.update_local_cache()
-
-
 class TushareLoader(object):
     """Get Tushare data"""
 
@@ -59,18 +61,33 @@ class TushareLoader(object):
         self.pro = ts.pro_api(conf['tushare_token'])
         self.csi_pool: Dict[str] = conf['csi_pool']
 
-    def update_local_cache(self):
+    def update_local_cache(self, min_file_size=None):
         """"""
 
         # % 获取交易日期
+        tradedates = self.get_tradedates(self.start_date, self.end_date, path=_PATH, fmt='%Y%m%d')
 
-        # calendar_dates = data.api.wget_tradedates(start_date, end_date, pro, path=_PATH)
-        tradedates = self.get_tradedates(
-            self.start_date, self.end_date, path=_PATH, fmt='%Y%m%d')
+        # % 股票曾用名 https://tushare.pro/document/2?doc_id=100
+        df = self.pro.namechange(**{
+            "ts_code": "",
+            "start_date": 20000101,
+            "end_date": 20990101,
+            "limit": "",
+            "offset": ""
+        }, fields=[
+            "ts_code",
+            "name",
+            "start_date",
+            "end_date",
+            "ann_date",
+            "change_reason"
+        ])
+        for c in ['ann_date', 'start_date', 'end_date']:
+            df[c] = pd.to_datetime(df[c])
+        df.to_csv(_PATH + 'cache/namechange.csv', index=False)
+        print(df.tail())
 
         # % 获取日线行情
-
-        # df = pro.daily(trade_date=tradedates.iloc[0])
         api_kws = [
             'daily', 'daily_basic', 'adj_factor',
             'suspend_d', 'moneyflow', 'stk_limit',
@@ -85,8 +102,8 @@ class TushareLoader(object):
             bar = tqdm(tradedates)
             for td in bar:
                 file = cache_path + td + '.csv'
-                if os.path.exists(file):  # 当前目录下存在同名文件，跳过 O(T)
-                    continue
+                if os.path.exists(file) and min_file_size and os.path.getsize(file) > min_file_size:  
+                    continue  # 当前目录下存在同名文件，且文件大小大于下限（防止空表），跳过 O(T)
                 else:  # 从Tushare获得数据
                     # break
                     for _ in range(3):  # 尝试3次
@@ -103,10 +120,7 @@ class TushareLoader(object):
             print(df.tail())
 
         # % IPO新股列表 最大2000条
-        new_share = self.wget_new_share(
-            path=_PATH + 'cache/',
-            lfy=2008, rfy=2023, step=5
-        )
+        new_share = self.wget_new_share(path=_PATH + 'cache/', lfy=2008, rfy=2023, step=5)
         print(new_share.head())
 
         # % 指数成分和权重
@@ -114,10 +128,7 @@ class TushareLoader(object):
             index_code = self.csi_pool[kind]
             print(kind, index_code)
 
-            df = self.wget_index_weight(
-                index_code, 2014, 2024,
-                path=_PATH + 'cache/'
-            )
+            df = self.wget_index_weight(index_code, 2014, 2024, path=_PATH + 'cache/')
             print(df.tail(3))
 
     def wget_index_weight(self,
@@ -203,7 +214,7 @@ class TushareLoader(object):
                     ])
                 df = pd.concat([tmp, df])
 
-            df.to_csv(file, index=False)
+            df.drop_duplicates().to_csv(file, index=False)
             print(f"""Save {len(df)} rows in `{file}`""")
 
         return df
@@ -216,6 +227,9 @@ class TushareLoader(object):
             start_date = self.start_date
         if not end_date:
             end_date = self.end_date
+        if fmt != '%Y%m%d':
+            start_date = datetime.datetime.strptime(start_date, fmt).strftime('%Y%m%d')
+            end_date = datetime.datetime.strptime(end_date, fmt).strftime('%Y%m%d')
         calendar_dates = self.wget_tradedates(start_date, end_date,
                                               path=path, filename=filename)
 
