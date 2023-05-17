@@ -78,12 +78,12 @@ class CacheCombiner(object):
         if os.path.exists(last_tgt_table):
             if is1d:  # a 1d table with columns - `tradingdate`
                 # Infer latest combined date from existing combined table
-                latest_date = pd.read_csv(last_tgt_table)['tradingdate'].iloc[-1]
+                latest_date = pd.read_csv(last_tgt_table)['tradingdate'].dropna(how='all').iloc[-1]
                 # Next date after the latest date
                 begin_date = load_tushare.next_calendar_date(latest_date, lfmt='%Y-%m-%d')
             else:
                 # Infer latest combined date from existing combined table
-                latest_date = pd.read_csv(last_tgt_table, index_col=0).index[-1]
+                latest_date = pd.read_csv(last_tgt_table, index_col=0).dropna(how='all').index[-1]
                 # Next date after the latest date
                 begin_date = load_tushare.next_calendar_date(latest_date, lfmt='%Y-%m-%d')
         else:
