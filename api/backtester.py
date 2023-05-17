@@ -158,6 +158,53 @@ def get_st_status(conf, bd, ed, tds, kind='01'):
     return df
 
 
+def get_large_mv(conf, bd, ed, tds, kind='01', bar=0.20):
+    """市值筛选条件，去除小市值，bar为去除的百分位置数"""
+    df: pd.DataFrame = pd.read_csv(conf['path']['circ_mv'], index_col=0, parse_dates=True)
+    df = df.drop_duplicates()
+    df = (df.rank(pct=True) > bar).astype(int)
+    df = df.reindex(pd.to_datetime(tds))
+    df = df.fillna(method='ffill')
+    if kind == '01':
+        df = df.astype(int)
+    else:
+        raise AttributeError(f'Unsupported kind={kind}!')
+    df = df.loc[bd: ed]
+    return df
+
+
+def get_return(conf, bd, ed, kind='ctc', hd=1, cond_list=None, len_assert=None):
+    """T0时买入持有hd日卖出收益率"""
+    from load_tushare import next_calendar_date
+    bd_1 = next_calendar_date(bd, -max(4, hd * 2), lfmt='%Y-%m-%d', rfmt='%Y-%m-%d')
+    ed1 = next_calendar_date(ed, max(4, hd * 2), lfmt='%Y-%m-%d', rfmt='%Y-%m-%d')
+    lp, rp = None, None  # T0 long price  |  T+X short price
+    if kind == 'cto':
+        lp = pd.read_csv(conf['path']['closeAdj'], index_col=0, parse_dates=True).loc[bd_1: ed1]
+        rp = pd.read_csv(conf['path']['openAdj'], index_col=0, parse_dates=True).loc[bd_1: ed1]
+    elif kind == 'ctc':
+        lp = pd.read_csv(conf['path']['closeAdj'], index_col=0, parse_dates=True).loc[bd_1: ed1]
+        rp = pd.read_csv(conf['path']['closeAdj'], index_col=0, parse_dates=True).loc[bd_1: ed1]
+    elif kind == 'oto':
+        lp = pd.read_csv(conf['path']['openAdj'], index_col=0, parse_dates=True).loc[bd_1: ed1]
+        rp = pd.read_csv(conf['path']['openAdj'], index_col=0, parse_dates=True).loc[bd_1: ed1]
+    elif kind == 'otc':
+        lp = pd.read_csv(conf['path']['openAdj'], index_col=0, parse_dates=True).loc[bd_1: ed1]
+        rp = pd.read_csv(conf['path']['closeAdj'], index_col=0, parse_dates=True).loc[bd_1: ed1]
+    else:
+        raise Exception()
+    if cond_list is not None:
+        lp = sift_tradeable_matrics(left=lp, cond_list=cond_list)
+        rp = sift_tradeable_matrics(left=rp, cond_list=cond_list)  # TODO: 用到了平仓价未来信息，实际会有滞后清仓的损失
+
+    rtn = rp.shift(-hd).iloc[:-hd] / lp.iloc[:-hd] - 1
+    rtn = rtn.loc[bd: ed]
+    # rtn = rtn.dropna(how='all', axis=1)
+    if len_assert:
+        assert len(rtn) == len_assert
+    return rtn
+
+
 # =========== OLD ============
 
 

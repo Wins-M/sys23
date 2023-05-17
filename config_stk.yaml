@@ -1,6 +1,10 @@
 # 配置文件有效性
 status : 1
 
+# 回测配置
+begin_date : '2016-01-01'
+end_date : '2022-12-31'
+
 # 加密信息
 tushare_token : '/home/winston/tushare_project/tokens/tushare'
 #tushare_token : '/Users/winston/api_mine/config/tokens/tushare'
