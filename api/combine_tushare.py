@@ -4,7 +4,8 @@ import numpy as np
 from tqdm import tqdm
 import load_tushare
 
-_PATH = '/Users/winston/mygitrep/sys23/'  # TODO
+# _PATH = '/Users/winston/mygitrep/sys23/'  # TODO
+_PATH = './'
 
 
 class CacheCombiner(object):

@@ -8,11 +8,14 @@ from tqdm import tqdm
 import tushare as ts
 from typing import Dict
 
-_PATH = '/Users/winston/mygitrep/sys23/'  # TODO
+# _PATH = '/Users/winston/mygitrep/sys23/'  # TODO
+# _PATH = '/home/winston/tushare_project/sys23/'
+_PATH = './'
 
 
 def main():
-    conf_path = '/Users/winston/mygitrep/sys23/config_stk.yaml'
+    # conf_path = '/Users/winston/mygitrep/sys23/config_stk.yaml'
+    conf_path = f'{_PATH}/config_stk.yaml'
     conf = conf_init(conf_path)
     tushare_loader = TushareLoader(conf)
     tushare_loader.update_local_cache(min_file_size=50)  # 有效文件需要大于 ${}B
