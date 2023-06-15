@@ -6,12 +6,12 @@ begin_date : '2016-01-01'
 end_date : '2022-12-31'
 
 # 加密信息
-tushare_token : '/home/winston/tushare_project/tokens/tushare'
-#tushare_token : '/Users/winston/api_mine/config/tokens/tushare'
+# tushare_token : '/home/winston/tushare_project/tokens/tushare'
+tushare_token : '/Users/winston/api_mine/config/tokens/tushare'
 
 # 本地地址（尽量少指定）
-api_path : '/home/winston/tushare_project/sys23'
-# api_path : '/Users/winston/mygitrep/sys23/'
+# api_path : '/home/winston/tushare_project/sys23'
+api_path : '/Users/winston/mygitrep/sys23/'
 
 
 # 相对地址
